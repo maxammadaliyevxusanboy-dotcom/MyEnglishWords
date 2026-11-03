@@ -1,0 +1,21 @@
+with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+
+      - run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '8.9'
+
+      - run: unzip MyEnglishWords_CloudBuild.zip -d source
+
+      - working-directory: source/MyEnglishWords
+        run: gradle :app:assembleDebug
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MyEnglishWords-APK
+          path: source/MyEnglishWords/app/build/outputs/apk/debug/app-debug.apk
